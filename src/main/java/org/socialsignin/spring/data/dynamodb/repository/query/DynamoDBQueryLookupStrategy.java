@@ -25,8 +25,6 @@ import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryLookupStrategy.Key;
 import org.springframework.data.repository.query.RepositoryQuery;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-
 /**
  * @author Michael Lavelle
  */
@@ -41,7 +39,7 @@ public class DynamoDBQueryLookupStrategy {
 
 	/**
 	 * Base class for {@link QueryLookupStrategy} implementations that need
-	 * access to an {@link DynamoDBMapper}.
+	 * access to an {@link com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper}.
 	 *
 	 * @author Michael Lavelle
 	 */

@@ -26,17 +26,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 public class User {
 
 	private String id;
-	
+
 	private String name;
-	
+
 	private Integer numberOfPlaylists;
-	
+
 	private Date joinDate;
-	
+
 	private Date joinYear;
-	
+
 	private String postCode;
-	
+
 	private Set<String> testSet;
 
 	public Set<String> getTestSet() {
@@ -47,7 +47,7 @@ public class User {
 		this.testSet = testSet;
 	}
 
-	
+
 	public Date getJoinDate() {
 		return joinDate;
 	}
@@ -55,8 +55,8 @@ public class User {
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
-	
-	@DynamoDBMarshalling(marshallerClass=DynamoDBYearMarshaller.class)
+
+	@DynamoDBMarshalling(marshallerClass = DynamoDBYearMarshaller.class)
 	public Date getJoinYear() {
 		return joinYear;
 	}
@@ -64,7 +64,7 @@ public class User {
 	public void setJoinYear(Date joinYear) {
 		this.joinYear = joinYear;
 	}
-	
+
 	public String getPostCode() {
 		return postCode;
 	}
@@ -73,7 +73,7 @@ public class User {
 		this.postCode = postCode;
 	}
 
-	@DynamoDBHashKey(attributeName = "Id")
+	@DynamoDBHashKey
 	public String getId() {
 		return id;
 	}
@@ -81,7 +81,7 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -99,8 +99,8 @@ public class User {
 	}
 
 
-	
-	
+
+
 
 
 }

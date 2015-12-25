@@ -1,38 +1,37 @@
 package org.socialsignin.spring.data.dynamodb.core;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-
-import org.socialsignin.spring.data.dynamodb.domain.sample.User;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.socialsignin.spring.data.dynamodb.domain.sample.User;
+
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 /**
  * Integration test that interacts with DynamoDB Local instance.
  */
-@Ignore
 public class DynamoDBTemplateIT {
 
     private static final String PORT = System.getProperty("dynamodb.port");
-
     private DynamoDBTemplate dynamoDBTemplate;
 
     @Before
-    public void setUp() {
-        AmazonDynamoDB dynamoDB = new AmazonDynamoDBClient(new BasicAWSCredentials("AWS-Key", ""));
-        dynamoDB.setEndpoint(String.format("http://localhost:%s", DynamoDBTemplateIT.PORT));
+    public void setUpOnce() {
+        assertNotNull(PORT);
 
+        AmazonDynamoDBClient dynamoDB = new AmazonDynamoDBClient(new BasicAWSCredentials("AWS-Key", ""));
+        dynamoDB.setEndpoint(String.format("http://localhost:%s", PORT));
         this.dynamoDBTemplate = new DynamoDBTemplate(dynamoDB);
     }
 
     @Test
     public void testUser_CRUD() {
-
         // Given a entity to save.
         User user = new User();
         user.setName("John Doe");
@@ -46,9 +45,9 @@ public class DynamoDBTemplateIT {
         User retrievedUser = dynamoDBTemplate.load(User.class, user.getId());
 
         // Verify the details on the entity.
-        assert retrievedUser.getName().equals(user.getName());
-        assert retrievedUser.getId().equals(user.getId());
-        assert retrievedUser.getNumberOfPlaylists() == user.getNumberOfPlaylists();
+        assertEquals(retrievedUser.getName(), user.getName());
+        assertEquals(retrievedUser.getId(), user.getId());
+        assertEquals(retrievedUser.getNumberOfPlaylists(), user.getNumberOfPlaylists());
 
         // Update the entity and save.
         retrievedUser.setNumberOfPlaylists(20);
@@ -56,14 +55,13 @@ public class DynamoDBTemplateIT {
 
         retrievedUser = dynamoDBTemplate.load(User.class, user.getId());
 
-        assert retrievedUser.getNumberOfPlaylists() == 20;
+        assertEquals(new Integer(20), retrievedUser.getNumberOfPlaylists());
 
         // Delete.
         dynamoDBTemplate.delete(retrievedUser);
 
         // Get again.
-        assert dynamoDBTemplate.load(User.class, user.getId()) == null;
-
+        assertNull(dynamoDBTemplate.load(User.class, user.getId()));
     }
 
 }

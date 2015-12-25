@@ -23,10 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.socialsignin.spring.data.dynamodb.repository.support.DynamoDBRepositoryFactoryBean;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryLookupStrategy.Key;
 
 /**
@@ -100,7 +98,7 @@ public @interface EnableDynamoDBRepositories {
 	String namedQueriesLocation() default "";
 
 	/**
-	 * Returns the key of the {@link QueryLookupStrategy} to be used for lookup
+	 * Returns the key of the {@link org.springframework.data.repository.query.QueryLookupStrategy} to be used for lookup
 	 * queries for query methods. Defaults to {@link Key#CREATE_IF_NOT_FOUND}.
 	 *
 	 * @return
@@ -108,7 +106,7 @@ public @interface EnableDynamoDBRepositories {
 	Key queryLookupStrategy() default Key.CREATE_IF_NOT_FOUND;
 
 	/**
-	 * Returns the {@link FactoryBean} class to be used for each repository
+	 * Returns the {@link org.springframework.beans.factory.FactoryBean} class to be used for each repository
 	 * instance. Defaults to {@link DynamoDBRepositoryFactoryBean}.
 	 *
 	 * @return

@@ -50,7 +50,7 @@ import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PartTreeDynamoDBQueryUnitTests {
+public class PartTreeDynamoDBQueryUnitTest {
 
 	private RepositoryQuery partTreeDynamoDBQuery;
 

@@ -16,11 +16,10 @@
 package org.socialsignin.spring.data.dynamodb.query;
 
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
-import org.socialsignin.spring.data.dynamodb.mapping.DynamoDBPersistentProperty;
 
 /**
- * {@link DynamoDBPersistentProperty} implementation
- * 
+ * {@link org.socialsignin.spring.data.dynamodb.mapping.DynamoDBPersistentProperty} implementation
+ *
  * @author Michael Lavelle
  */
 public abstract class AbstractQuery<T> implements Query<T> {
@@ -31,17 +30,19 @@ public abstract class AbstractQuery<T> implements Query<T> {
 	protected boolean scanEnabled = false;
 	protected boolean scanCountEnabled = false;
 
-	
-	
+
+
 	public boolean isScanCountEnabled() {
 		return scanCountEnabled;
 	}
 
-	public void setScanCountEnabled(boolean scanCountEnabled) {
+	@Override
+    public void setScanCountEnabled(boolean scanCountEnabled) {
 		this.scanCountEnabled = scanCountEnabled;
 	}
 
-	public void setScanEnabled(boolean scanEnabled) {
+	@Override
+    public void setScanEnabled(boolean scanEnabled) {
 		this.scanEnabled = scanEnabled;
 	}
 

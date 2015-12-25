@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.springframework.data.mapping.context.AbstractMappingContext;
-import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.model.SimpleTypeHolder;
 import org.springframework.data.util.TypeInformation;
 
@@ -29,16 +28,16 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 /**
- * Default implementation of a {@link MappingContext} for DynamoDB using
+ * Default implementation of a {@link org.springframework.data.mapping.context.MappingContext} for DynamoDB using
  * {@link DynamoDBPersistentEntityImpl} and {@link DynamoDBPersistentProperty}
  * as primary abstractions.
- * 
+ *
  * @author Michael Lavelle
  */
 public class DynamoDBMappingContext extends AbstractMappingContext<DynamoDBPersistentEntityImpl<?>, DynamoDBPersistentProperty> {
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.data.mapping.context.AbstractMappingContext#
 	 * shouldCreatePersistentEntityFor
 	 * (org.springframework.data.util.TypeInformation)
@@ -51,7 +50,7 @@ public class DynamoDBMappingContext extends AbstractMappingContext<DynamoDBPersi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.data.mapping.AbstractMappingContext#
 	 * createPersistentProperty(java.lang.reflect.Field,
 	 * java.beans.PropertyDescriptor,
@@ -67,7 +66,7 @@ public class DynamoDBMappingContext extends AbstractMappingContext<DynamoDBPersi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.data.mapping.context.AbstractMappingContext#
 	 * shouldCreatePersistentEntityFor
 	 * (org.springframework.data.util.TypeInformation)

@@ -1,3 +1,5 @@
+[![codecov.io](https://codecov.io/github/derjust/spring-data-dynamodb/coverage.svg?branch=master)](https://codecov.io/github/derjust/spring-data-dynamodb?branch=master) [![Build Status](https://travis-ci.org/derjust/spring-data-dynamodb.svg?branch=master)](https://travis-ci.org/derjust/spring-data-dynamodb) 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.derjust/spring-data-dynamodb/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.derjust/spring-data-dynamodb)
 # Spring Data DynamoDB ( Work in Progress ) #
 
 The primary goal of the [Spring Data](http://www.springsource.org/spring-data) project is to make it easier to build Spring-powered applications that use data access technologies. This module deals with enhanced support for Amazon DynamoDB based data access layers.
@@ -13,7 +15,6 @@ The primary goal of the [Spring Data](http://www.springsource.org/spring-data) p
 
 For a demo of spring-data-dynamodb, using spring-data-rest to showcase DynamoDB repositories exposed with REST,
 please see <a href="https://github.com/michaellavelle/spring-data-dynamodb-demo">spring-data-dynamodb-demo
-
 ## Version
 
 The major and minor number of this library refers to the compatible Spring framework compatibility:
@@ -21,13 +22,21 @@ The major and minor number of this library refers to the compatible Spring frame
 
 ## Quick Start ##
 
-Download the jar though Maven Central:
+Download the jar though Maven:
+
+
+```xml
+<repository>
+	<id>opensourceagility-release</id>
+	<url>http://repo.opensourceagility.com/release/</url
+</repository>
+```
 
 ```xml
 <dependency>
   <groupId>org.socialsignin</groupId>
   <artifactId>spring-data-dynamodb</artifactId>
-  <version>4.2.0</version>
+  <version>4.2.1</version>
 </dependency>
 ```
 
@@ -175,4 +184,5 @@ public class UserRepositoryIntegrationTest {
   }
 }
 ```
+ 
 

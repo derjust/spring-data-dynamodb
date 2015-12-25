@@ -221,24 +221,24 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 					indexName = declaredOrderedIndexNameForAttribute;
 			}
 		}
-		
+
 		return indexName;
 	}
 
 	protected String getGlobalSecondaryIndexName() {
 
-		
+
 		// Lazy evaluate the globalSecondaryIndexName if not already set
-		
+
 		// We must have attribute conditions specified in order to use a global secondary index, otherwise return null for index name
-		// Also this method only evaluates the 
+		// Also this method only evaluates the
 		if (globalSecondaryIndexName == null  && attributeConditions != null && !attributeConditions.isEmpty())
 		{
 			// Declare map of index names by attribute name which we will populate below - this will be used to determine which index to use if multiple indexes are applicable
-			Map<String,String[]> indexNamesByAttributeName =  new HashMap<String,String[]>(); 
+			Map<String,String[]> indexNamesByAttributeName =  new HashMap<String,String[]>();
 
 			// Declare map of attribute lists by index name which we will populate below - this will be used to determine whether we have an exact match index for specified attribute conditions
-			MultiValueMap<String,String> attributeListsByIndexName = new LinkedMultiValueMap<String,String>(); 
+			MultiValueMap<String,String> attributeListsByIndexName = new LinkedMultiValueMap<String,String>();
 
 			// Populate the above maps
 			for (Entry<String, String[]> indexNamesForPropertyNameEntry : entityInformation.getGlobalSecondaryIndexNamesByPropertyName().entrySet())
@@ -251,11 +251,11 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 					attributeListsByIndexName.add(indexNameForPropertyName, attributeName);
 				}
 			}
-			
+
 			// Declare lists to store matching index names
 			List<String> exactMatchIndexNames = new ArrayList<String>();
 			List<String> partialMatchIndexNames = new ArrayList<String>();
-			
+
 			// Populate matching index name lists - an index is either an exact match ( the index attributes match all the specified criteria exactly)
 			// or a partial match ( the properties for the specified criteria are contained within the property set for an index )
 			for (Entry<String, List<String>> attributeListForIndexNameEntry : attributeListsByIndexName.entrySet())
@@ -274,7 +274,7 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 					}
 				}
 			}
-			
+
 			if (exactMatchIndexNames.size() > 1)
 			{
 				throw new RuntimeException("Multiple indexes defined on same attribute set:" + attributeConditions.keySet());
@@ -313,7 +313,7 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 		return getAttributeName(getHashKeyPropertyName());
 	}
 
-	
+
 	protected boolean hasIndexHashKeyEqualCondition()
 	{
 		boolean hasIndexHashKeyEqualCondition = false;
@@ -336,7 +336,7 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 		}
 		return hasIndexHashKeyEqualCondition;
 	}
-	
+
 	protected boolean hasIndexRangeKeyCondition()
 	{
 		boolean hasIndexRangeKeyCondition = false;
@@ -359,9 +359,9 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 				&& !entityInformation.getGlobalSecondaryIndexNamesByPropertyName().keySet().contains(getHashKeyPropertyName())) {
 			return false;
 		}
-		
+
 		int attributeConditionCount = attributeConditions.keySet().size();
-		boolean attributeConditionsAppropriate =  hasIndexHashKeyEqualCondition() && (attributeConditionCount  == 1 || (attributeConditionCount == 2 && hasIndexRangeKeyCondition()));  
+		boolean attributeConditionsAppropriate =  hasIndexHashKeyEqualCondition() && (attributeConditionCount  == 1 || (attributeConditionCount == 2 && hasIndexRangeKeyCondition()));
 		return global && (attributeConditionCount == 0 || attributeConditionsAppropriate) && comparisonOperatorsPermittedForQuery();
 
 	}
@@ -431,7 +431,7 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 			return buildFinderQuery(dynamoDBOperations);
 		}
 	}
-	
+
 	@Override
 	public Query<Long> buildCountQuery(DynamoDBOperations dynamoDBOperations,boolean pageQuery) {
 		if (isApplicableForLoad()) {
@@ -440,18 +440,18 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID extends Serializable> 
 			return buildFinderCountQuery(dynamoDBOperations,pageQuery);
 		}
 	}
-	
+
 
 	protected abstract Query<T> buildSingleEntityLoadQuery(DynamoDBOperations dynamoDBOperations);
 
 	protected abstract Query<Long> buildSingleEntityCountQuery(DynamoDBOperations dynamoDBOperations);
 
-	
+
 	protected abstract Query<T> buildFinderQuery(DynamoDBOperations dynamoDBOperations);
 
 	protected abstract Query<Long> buildFinderCountQuery(DynamoDBOperations dynamoDBOperations,boolean pageQuery);
 
-	
+
 	protected abstract boolean isOnlyHashKeySpecified();
 
 	@Override

@@ -36,7 +36,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
  * @author Michael Lavelle
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleDynamoDBPagingAndSortingRepositoryUnitTests {
+public class SimpleDynamoDBPagingAndSortingRepositoryUnitTest {
 
 	SimpleDynamoDBPagingAndSortingRepository<User, Long> repoForEntityWithOnlyHashKey;
 

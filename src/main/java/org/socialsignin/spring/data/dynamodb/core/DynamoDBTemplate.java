@@ -11,7 +11,6 @@ import org.socialsignin.spring.data.dynamodb.mapping.event.AfterScanEvent;
 import org.socialsignin.spring.data.dynamodb.mapping.event.BeforeDeleteEvent;
 import org.socialsignin.spring.data.dynamodb.mapping.event.BeforeSaveEvent;
 import org.socialsignin.spring.data.dynamodb.mapping.event.DynamoDBMappingEvent;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,43 +27,32 @@ import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.amazonaws.services.dynamodbv2.model.Select;
 
-public class DynamoDBTemplate implements DynamoDBOperations,ApplicationContextAware {
+public class DynamoDBTemplate implements DynamoDBOperations, ApplicationContextAware {
 
-	protected DynamoDBMapper dynamoDBMapper;
-	private AmazonDynamoDB amazonDynamoDB;
-	private DynamoDBMapperConfig dynamoDBMapperConfig;
+	private final DynamoDBMapper dynamoDBMapper;
+	private final AmazonDynamoDB amazonDynamoDB;
+	private final DynamoDBMapperConfig dynamoDBMapperConfig;
 	private ApplicationEventPublisher eventPublisher;
-	
-	public DynamoDBTemplate(AmazonDynamoDB amazonDynamoDB,DynamoDBMapperConfig dynamoDBMapperConfig)
-	{
-		this.amazonDynamoDB = amazonDynamoDB;
-		setDynamoDBMapperConfig(dynamoDBMapperConfig);
+
+    public DynamoDBTemplate(AmazonDynamoDB amazonDynamoDB) {
+        this(amazonDynamoDB, DynamoDBMapperConfig.DEFAULT);
+    }
+
+	public DynamoDBTemplate(AmazonDynamoDB amazonDynamoDB,DynamoDBMapperConfig dynamoDBMapperConfig) {
+		this(new DynamoDBMapper(amazonDynamoDB, dynamoDBMapperConfig), amazonDynamoDB, dynamoDBMapperConfig);
 	}
-	
-	public DynamoDBTemplate(AmazonDynamoDB amazonDynamoDB)
-	{
-		this.amazonDynamoDB = amazonDynamoDB;
-		setDynamoDBMapperConfig(null);
-	}
-	
+
+    protected DynamoDBTemplate(DynamoDBMapper dynamoDBMapper, AmazonDynamoDB amazonDynamoDB,DynamoDBMapperConfig dynamoDBMapperConfig) {
+        this.dynamoDBMapper = dynamoDBMapper;
+        this.amazonDynamoDB = amazonDynamoDB;
+        this.dynamoDBMapperConfig = dynamoDBMapperConfig;
+    }
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.eventPublisher = applicationContext;
 	}
 
-	
-	public void setDynamoDBMapperConfig(DynamoDBMapperConfig dynamoDBMapperConfig)
-	{
-		this.dynamoDBMapperConfig = dynamoDBMapperConfig;
-		dynamoDBMapper = dynamoDBMapperConfig == null ? new DynamoDBMapper(amazonDynamoDB) : new DynamoDBMapper(
-				amazonDynamoDB, dynamoDBMapperConfig);
-		if (dynamoDBMapperConfig == null)
-		{
-			this.dynamoDBMapperConfig = DynamoDBMapperConfig.DEFAULT;
-		}
-	}
-	
 	@Override
 	public <T> int count(Class<T> domainClass,
 			DynamoDBQueryExpression<T> queryExpression) {
@@ -72,18 +60,26 @@ public class DynamoDBTemplate implements DynamoDBOperations,ApplicationContextAw
 	}
 
 	@Override
-	public <T> PaginatedQueryList<T> query(Class<T> domainClass,
-			DynamoDBQueryExpression<T> queryExpression) {
-		PaginatedQueryList<T> results = dynamoDBMapper.query(domainClass, queryExpression);
-		maybeEmitEvent(new AfterQueryEvent<T>(results));
-		return results;
-	}
-
-	@Override
 	public <T> int count(Class<T> domainClass,
 			DynamoDBScanExpression scanExpression) {
 		return dynamoDBMapper.count(domainClass, scanExpression);
 	}
+
+    @Override
+    public <T> int count(Class<T> clazz, QueryRequest mutableQueryRequest) {
+        mutableQueryRequest.setSelect(Select.COUNT);
+
+        // Count queries can also be truncated for large datasets
+        int count = 0;
+        QueryResult queryResult = null;
+        do {
+            queryResult = amazonDynamoDB.query(mutableQueryRequest);
+            count += queryResult.getCount();
+            mutableQueryRequest.setExclusiveStartKey(queryResult.getLastEvaluatedKey());
+        } while (queryResult.getLastEvaluatedKey() != null);
+
+        return count;
+    }
 
 	@Override
 	public <T> T load(Class<T> domainClass, Object hashKey, Object rangeKey) {
@@ -166,7 +162,6 @@ public class DynamoDBTemplate implements DynamoDBOperations,ApplicationContextAw
 		{
 			maybeEmitEvent(new AfterDeleteEvent<Object>(entity));
 		}
-		
 	}
 
 	@Override
@@ -177,21 +172,13 @@ public class DynamoDBTemplate implements DynamoDBOperations,ApplicationContextAw
 				dynamoDBMapperConfig.getPaginationLoadingStrategy(), dynamoDBMapperConfig);
 	}
 
-	@Override
-	public <T> int count(Class<T> clazz, QueryRequest mutableQueryRequest) {
-		mutableQueryRequest.setSelect(Select.COUNT);
-
-        // Count queries can also be truncated for large datasets
-        int count = 0;
-        QueryResult queryResult = null;
-        do {
-            queryResult = amazonDynamoDB.query(mutableQueryRequest);
-            count += queryResult.getCount();
-            mutableQueryRequest.setExclusiveStartKey(queryResult.getLastEvaluatedKey());
-        } while (queryResult.getLastEvaluatedKey() != null);
-
-        return count;
-	}
+    @Override
+    public <T> PaginatedQueryList<T> query(Class<T> domainClass,
+            DynamoDBQueryExpression<T> queryExpression) {
+        PaginatedQueryList<T> results = dynamoDBMapper.query(domainClass, queryExpression);
+        maybeEmitEvent(new AfterQueryEvent<T>(results));
+        return results;
+    }
 
 	@Override
 	public String getOverriddenTableName(String tableName) {
@@ -205,12 +192,12 @@ public class DynamoDBTemplate implements DynamoDBOperations,ApplicationContextAw
 
 		return tableName;
 	}
-	
+
 	protected <T> void maybeEmitEvent(DynamoDBMappingEvent<T> event) {
 		if (null != eventPublisher) {
 			eventPublisher.publishEvent(event);
 		}
 }
 
-	
+
 }
