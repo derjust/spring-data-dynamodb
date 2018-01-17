@@ -33,6 +33,9 @@
       <action dev="derjust" issue="108" type="fix" date="2018-01-14">
         Opened constructor and fixed NPE in case of missing DynamoDBConfig
       </action>
+      <action dev="derjust" issue="89" type="add" date="2018-01-17">
+        Added basic support for Pageable
+      </action>
     </release>
     <release version="5.0.1" date="2018-01-06" description="Maintenance release">
       <action dev="derjust" issue="68" type="fix" date="2017-12-01" >

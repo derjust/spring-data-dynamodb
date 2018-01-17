@@ -18,6 +18,7 @@ package org.socialsignin.spring.data.dynamodb.repository.query;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 import org.socialsignin.spring.data.dynamodb.query.Query;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 /**
@@ -37,7 +38,9 @@ public interface DynamoDBQueryCriteria<T, ID> {
 	DynamoDBQueryCriteria<T, ID> withPropertyBetween(String segment, Object value1, Object value2, Class<?> type);
 
 	DynamoDBQueryCriteria<T, ID> withSort(Sort sort);
-
+	
+	DynamoDBQueryCriteria<T, ID> withPageable(Pageable pageable);
+	
 	Query<T> buildQuery(DynamoDBOperations dynamoDBOperations);
 
 	Query<Long> buildCountQuery(DynamoDBOperations dynamoDBOperations, boolean pageQuery);

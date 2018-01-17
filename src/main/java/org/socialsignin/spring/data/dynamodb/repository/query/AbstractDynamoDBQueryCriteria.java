@@ -29,6 +29,7 @@ import org.socialsignin.spring.data.dynamodb.marshaller.Date2IsoDynamoDBMarshall
 import org.socialsignin.spring.data.dynamodb.marshaller.Instant2IsoDynamoDBMarshaller;
 import org.socialsignin.spring.data.dynamodb.query.Query;
 import org.socialsignin.spring.data.dynamodb.repository.support.DynamoDBEntityInformation;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
@@ -66,6 +67,7 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID> implements DynamoDBQu
 	protected Object hashKeyPropertyValue;
 	protected String globalSecondaryIndexName;
 	protected Sort sort;
+	protected Pageable pageable;
 
 	public abstract boolean isApplicableForLoad();
 
@@ -132,7 +134,14 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID> implements DynamoDBQu
 			queryRequest.setSelect(Select.ALL_PROJECTED_ATTRIBUTES);
 			applySortIfSpecified(queryRequest, new ArrayList<String>(new HashSet<String>(allowedSortProperties)));
 		}
+		applyPageableIfSpecified(queryRequest);
 		return queryRequest;
+	}
+
+	private void applyPageableIfSpecified(QueryRequest queryRequest) {
+		if (pageable.isPaged()) {
+			queryRequest.setLimit(pageable.getPageSize());
+		}
 	}
 
 	protected void applySortIfSpecified(DynamoDBQueryExpression<T> queryExpression, List<String> permittedPropertyNames) {
@@ -685,6 +694,12 @@ public abstract class AbstractDynamoDBQueryCriteria<T, ID> implements DynamoDBQu
 	@Override
 	public DynamoDBQueryCriteria<T, ID> withSort(Sort sort) {
 		this.sort = sort;
+		return this;
+	}
+
+	@Override
+	public DynamoDBQueryCriteria<T, ID> withPageable(Pageable pageable) {
+		this.pageable = pageable;
 		return this;
 	}
 
