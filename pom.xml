@@ -399,6 +399,7 @@
                         <table>src/test/resources/customerhistory_table.json</table>
                         <table>src/test/resources/installation_table.json</table>
                         <table>src/test/resources/auditable_user_table.json</table>
+                        <table>src/test/resources/person_table.json</table>
                     </tables>
                     <port>${dynamodblocal.port}</port>
                     <dist>${project.build.directory}/dynamodb-dist</dist>

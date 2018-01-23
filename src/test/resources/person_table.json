@@ -1,0 +1,27 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "Name",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "Area",
+      "AttributeType": "S"
+    }
+   ],
+  "KeySchema": [
+    {
+      "AttributeName": "Name",
+      "KeyType": "HASH"
+    },
+    {
+      "AttributeName": "Area",
+      "KeyType": "RANGE"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": "10",
+    "WriteCapacityUnits": "10"
+  },
+  "TableName": "person"
+}

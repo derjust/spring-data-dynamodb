@@ -50,7 +50,7 @@ public class DynamoDBEntityMetadataSupport<T, ID> implements DynamoDBHashKeyExtr
 	private List<String> globalIndexRangeKeyPropertyNames;
 
 	private String dynamoDBTableName;
-	private Map<String, String[]> globalSecondaryIndexNames = new HashMap<String, String[]>();
+	private Map<String, String[]> globalSecondaryIndexNames = new HashMap<>();
 
 	@Override
 	public String getDynamoDBTableName() {
@@ -70,9 +70,9 @@ public class DynamoDBEntityMetadataSupport<T, ID> implements DynamoDBHashKeyExtr
 		DynamoDBTable table = this.domainType.getAnnotation(DynamoDBTable.class);
 		Assert.notNull(table, "Domain type must by annotated with DynamoDBTable!");
 		this.dynamoDBTableName = table.tableName();
-		this.globalSecondaryIndexNames = new HashMap<String, String[]>();
-		this.globalIndexHashKeyPropertyNames = new ArrayList<String>();
-		this.globalIndexRangeKeyPropertyNames = new ArrayList<String>();
+		this.globalSecondaryIndexNames = new HashMap<>();
+		this.globalIndexHashKeyPropertyNames = new ArrayList<>();
+		this.globalIndexRangeKeyPropertyNames = new ArrayList<>();
 		ReflectionUtils.doWithMethods(domainType, new MethodCallback() {
 			@Override
             public void doWith(Method method) {

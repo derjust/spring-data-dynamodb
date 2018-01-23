@@ -71,14 +71,21 @@ public abstract class AbstractDynamoDBQueryCreator<T, ID, R> extends
 			throw new UnsupportedOperationException("Case insensitivity not supported");
 
 		Class<?> leafNodePropertyType = part.getProperty().getLeafProperty().getType();
-		
-		PropertyPath leafNodePropertyPath = part.getProperty().getLeafProperty();
-		String leafNodePropertyName = leafNodePropertyPath.toDotPath();
+
+		part.getProperty().forEach(System.out::println);
+
+		//PropertyPath leafNodePropertyPath = part.getProperty().getLeafProperty();
+		//String leafNodePropertyName = leafNodePropertyPath.toDotPath();
+		String leafNodePropertyName = part.getProperty().toDotPath();
+		//TODO #114 - is this correct?
+		//TODO max deepth of 32 supported by AWS
+		/*
 		if (leafNodePropertyName.indexOf(".") != -1)
 		{
+
 			int index = leafNodePropertyName.lastIndexOf(".");
 			leafNodePropertyName = leafNodePropertyName.substring(index);
-		}
+		}*/
 	
 		switch (part.getType()) {
 		

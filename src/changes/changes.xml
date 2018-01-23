@@ -20,7 +20,7 @@
           xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
   <properties>
     <title>spring-data-dynamodb Changes</title>
-    <author email="zeeman@zeeman.de" >derjust</author>
+    <author email="zeeman@zeeman.de">derjust</author>
   </properties>
   <body>
     <release version="5.0.2" date="" description="Maintenance release">
