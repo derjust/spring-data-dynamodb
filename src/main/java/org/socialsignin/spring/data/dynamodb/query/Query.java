@@ -28,16 +28,16 @@ public interface Query<T> {
      * @throws IllegalStateException if called for a Java
      *    Persistence query language UPDATE or DELETE statement
      */
-    public List<T> getResultList();
+    List<T> getResultList();
 
     /**
      * Execute a SELECT query that returns a single result.
      * @return the result
      */
-    public T getSingleResult();
+    T getSingleResult();
 
 
-    public void setScanEnabled(boolean scanEnabled);
-    public void setScanCountEnabled(boolean scanCountEnabled);
+    void setScanEnabled(boolean scanEnabled);
+    void setScanCountEnabled(boolean scanCountEnabled);
 
 }

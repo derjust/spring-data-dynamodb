@@ -25,6 +25,10 @@ import org.springframework.data.domain.Sort;
  */
 public interface DynamoDBQueryCriteria<T, ID> {
 
+	default DynamoDBQueryCriteria<T, ID> NULL() {
+		return new NullDynamoDBQueryCriteria();
+	}
+
 	DynamoDBQueryCriteria<T, ID> withSingleValueCriteria(String propertyName, ComparisonOperator comparisonOperator,
 			Object value, Class<?> type);
 
