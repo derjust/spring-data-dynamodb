@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,20 +38,28 @@ import static org.junit.Assert.assertTrue;
 public class HashRangeKeyIT {
 
 	@Autowired
-	PlaylistRepository playlistRepository;
+	private PlaylistRepository playlistRepository;
 
-	@Test
-	public void runCrudOperations() {
-		final String displayName = "displayName" + UUID.randomUUID().toString();
+	private Playlist generatePlaylist(String genre, String displayName) {
 		final String userName = "userName-" + UUID.randomUUID().toString();
 		final String playlistName = "playlistName-" + UUID.randomUUID().toString();
 		PlaylistId id = new PlaylistId(userName, playlistName);
 
-		Optional<Playlist> actual = playlistRepository.findById(id);
-		assertFalse(actual.isPresent());
-
 		Playlist playlist = new Playlist(id);
 		playlist.setDisplayName(displayName);
+		playlist.setGenre(genre);
+
+		return playlist;
+	}
+	
+	@Test
+	public void runCrudOperations() {
+		String displayName = "displayName" + UUID.randomUUID().toString();
+		Playlist playlist = generatePlaylist("genre-" + UUID.randomUUID().toString(), displayName);
+		PlaylistId id = playlist.getId();
+
+		Optional<Playlist> actual = playlistRepository.findById(id);
+		assertFalse(actual.isPresent());
 
 		playlistRepository.save(playlist);
 
@@ -59,5 +68,17 @@ public class HashRangeKeyIT {
 		assertEquals(displayName, actual.get().getDisplayName());
 		assertEquals(id.getPlaylistName(), actual.get().getPlaylistName());
 		assertEquals(id.getUserName(), actual.get().getUserName());
+	}
+
+	@Test
+	public void testGsiSharedRange() {
+		final String GENRE = "GENRE";
+		playlistRepository.save(generatePlaylist(GENRE, "1"));
+		playlistRepository.save(generatePlaylist(GENRE, "2"));
+		playlistRepository.save(generatePlaylist(GENRE, "3"));
+		
+		List<Playlist> actual = playlistRepository.findByGenreAndPlaylistNameBetween(GENRE, "2", "3");
+		
+		assertEquals(2, actual.size());
 	}
 }

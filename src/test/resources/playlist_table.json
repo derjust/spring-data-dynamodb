@@ -7,7 +7,33 @@
     {
       "AttributeName": "PlaylistName",
       "AttributeType": "S"
+    },
+    {
+      "AttributeName": "Genre",
+      "AttributeType": "S"
     }
+   ],
+   "GlobalSecondaryIndexes": [ 
+     { 
+        "IndexName": "Genre-PlaylistName-index",
+        "KeySchema": [ 
+           { 
+              "AttributeName": "Genre",
+              "KeyType": "HASH"
+            },
+            {
+               "AttributeName": "PlaylistName",
+               "KeyType": "RANGE"
+            }
+         ],
+         "Projection": {
+            "ProjectionType": "ALL"
+         },
+         "ProvisionedThroughput": { 
+            "ReadCapacityUnits": "10",
+            "WriteCapacityUnits": "10"
+         }
+      }
    ],
   "KeySchema": [
     {

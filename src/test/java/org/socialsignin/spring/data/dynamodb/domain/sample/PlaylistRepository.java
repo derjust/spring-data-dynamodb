@@ -15,8 +15,15 @@
  */
 package org.socialsignin.spring.data.dynamodb.domain.sample;
 
+import java.util.List;
+
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.springframework.data.repository.CrudRepository;
 
+@EnableScan
 public interface PlaylistRepository extends CrudRepository<Playlist, PlaylistId> {
+	List<Playlist> findByGenre(String genre);
+	List<Playlist> findByGenreAndPlaylistName(String genre, String playlistName);
+	List<Playlist> findByGenreAndPlaylistNameBetween(String genre, String startPlaylistName, String endPlaylistName);
 
 }

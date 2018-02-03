@@ -57,7 +57,8 @@ public class DynamoDBLocalResource extends ExternalResource {
 
         Optional<String> rangeKey = Optional.empty();
         if (entityInfo instanceof DynamoDBIdIsHashAndRangeKeyEntityInformation) {
-            rangeKey = Optional.of(((DynamoDBIdIsHashAndRangeKeyEntityInformation)entityInfo).getRangeKeyPropertyName());
+            rangeKey = Optional.of(((DynamoDBIdIsHashAndRangeKeyEntityInformation)entityInfo).getRangeKeyPropertyName())
+                    .flatMap(e -> entityInfo.getOverriddenAttributeName(e));
         }
 
         return createTable(ddb, tableName, hashKey, rangeKey);
