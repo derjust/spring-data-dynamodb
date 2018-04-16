@@ -53,7 +53,7 @@ public abstract class AbstractDynamoDBQueryCriteriaUnitTest<C extends AbstractDy
 
 		// Add "now" as an attribute value - a Date object originally generated from EST
 		// string
-		criteria.addAttributeValue(attributeValueList, now, "someDateProperty", Date.class, false);
+		criteria.addAttributeValue(attributeValueList, now, Date.class, false);
 
 		AttributeValue resultingValue = attributeValueList.get(0);
 
@@ -89,7 +89,7 @@ public abstract class AbstractDynamoDBQueryCriteriaUnitTest<C extends AbstractDy
 
 		// Add "now" as an attribute value - a Date object originally generated from EST
 		// string
-		criteria.addAttributeValue(attributeValueList, dateList, "someDateProperty", Date.class, true);
+		criteria.addAttributeValue(attributeValueList, dateList, Date.class, true);
 
 		AttributeValue resultingValue = attributeValueList.get(0);
 
