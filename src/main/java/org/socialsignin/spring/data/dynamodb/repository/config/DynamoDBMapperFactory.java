@@ -15,22 +15,23 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository.config;
 
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DynamoDBMapperFactory implements FactoryBean<DynamoDBMapper> {
 
-	private final AmazonDynamoDB amazonDynamoDB;
-	private final DynamoDBMapperConfig dynamoDBMapperConfig;
-
+	// fix issue #230
 	@Autowired
-	public DynamoDBMapperFactory(AmazonDynamoDB amazonDynamoDB, DynamoDBMapperConfig dynamoDBMapperConfig) {
-		this.amazonDynamoDB = amazonDynamoDB;
-		this.dynamoDBMapperConfig = dynamoDBMapperConfig;
+	private AmazonDynamoDB amazonDynamoDB;
+
+	// fix issue #230
+	@Autowired
+	private DynamoDBMapperConfig dynamoDBMapperConfig;
+
+	public DynamoDBMapperFactory() {
 	}
 
 	@Override
@@ -42,5 +43,4 @@ public class DynamoDBMapperFactory implements FactoryBean<DynamoDBMapper> {
 	public Class<?> getObjectType() {
 		return DynamoDBMapper.class;
 	}
-
 }
