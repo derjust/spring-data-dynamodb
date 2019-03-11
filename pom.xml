@@ -135,6 +135,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.amazonaws.services.dynamodbv2</groupId>
+            <artifactId>amazon-dynamodb-transactions</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>
