@@ -8,6 +8,9 @@ target
 pom.xml.releaseBackup
 release.properties
 
+spring-data-dynamodb-examples/src/main/resources/application.properties
+
+
 # Package Files #
 *.jar
 *.war

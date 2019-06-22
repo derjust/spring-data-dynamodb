@@ -12,6 +12,18 @@ mvn formatter:format
 mvn license:format
 ```
 
+## Check for updated dependency versions
+
+```
+mvn versions:display-dependency-updates
+```
+
+## Check for updated plugin versions
+
+```
+mvn versions:display-plugin-updates
+```
+
 # Release process 
 
 1. Check `pom.xml` for the proper `<version />` tag

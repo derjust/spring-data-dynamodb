@@ -7,6 +7,12 @@ language:
 jdk:
   - oraclejdk8
   - oraclejdk9
+  - openjdk10
+  - openjdk11
+  - openjdk12
+
+env:
+  - TRAVIS_CI=true
 
 before_script:
   - pip install --user codecov

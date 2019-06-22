@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2018 spring-data-dynamodb (https://github.com/derjust/spring-data-dynamodb)
+    Copyright © 2013-2019 spring-data-dynamodb (https://github.com/derjust/spring-data-dynamodb)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.derjust</groupId>
-    <artifactId>spring-data-dynamodb</artifactId>
+    <artifactId>spring-data-dynamodb-parent</artifactId>
+    <packaging>pom</packaging>
     <version>5.1.1-SNAPSHOT</version>
-    <name>Spring Data DynamoDB</name>
-    <inceptionYear>2018</inceptionYear>
+    <name>Spring Data DynamoDB Parent</name>
+    <inceptionYear>2013</inceptionYear>
 
     <description>The primary goal of the Spring® Data project is to make it easier to build Spring-powered applications
         that use data access technologies.
@@ -37,16 +38,18 @@
     </licenses>
 
     <properties>
-        <spring.version>5.1.2.RELEASE</spring.version>
-        <spring-data.version>2.1.2.RELEASE</spring-data.version>
+        <spring.version>5.1.6.RELEASE</spring.version>
+        <spring-data.version>2.1.8.RELEASE</spring-data.version>
+        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
 
         <hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
-        <aws-java-sdk.version>1.11.515</aws-java-sdk.version>
+        <aws-java-sdk.version>1.11.551</aws-java-sdk.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.23.0</mockito.version>
         <cdi.version>1.2</cdi.version>
         <slf4j-test.version>1.2.0</slf4j-test.version>
         <sqlite4java.version>1.0.392</sqlite4java.version>
+        <logback-colorizer.version>1.0.1</logback-colorizer.version>
 
         <findbugs.version>3.0.5</findbugs.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -112,6 +115,11 @@
                 <artifactId>slf4j-test</artifactId>
                 <version>${slf4j-test.version}</version>
             </dependency>
+                <dependency>
+        <groupId>org.tuxdude.logback.extensions</groupId>
+        <artifactId>logback-colorizer</artifactId>
+        <version>${logback-colorizer.version}</version>
+    </dependency>
 
             <!-- AWS SDK comes with dependencies to 1.2 and 1.1.3 therefore locking down on 1.2 -->
             <dependency>
@@ -134,224 +142,255 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <!-- SPRING -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-
-        <!-- SPRING DATA -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-
-        <!-- DynamoDB -->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-dynamodb</artifactId>
-        </dependency>
-
-        <!-- CDI -->
-        <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${cdi.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- TEST -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>DynamoDBLocal</artifactId>
-            <scope>test</scope>
-       </dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-to-slf4j</artifactId>
-			<scope>test</scope>
-		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.org.lidalia</groupId>
-            <artifactId>slf4j-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>net.revelc.code.formatter</groupId>
-                    <artifactId>formatter-maven-plugin</artifactId>
-                    <version>2.7.2</version>
-                    <configuration>
-                        <lineEnding>LF</lineEnding>
-                    </configuration>
+            	<plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>enforce-java</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <requireJavaVersion>
-                                        <version>1.8.0</version>
-                                    </requireJavaVersion>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
+                    <version>3.0.0-M2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <Specification-Title>Spring Data</Specification-Title>
+                                <Specification-Version>2.1</Specification-Version>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.10</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.17</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.19</version>
+                    <version>3.0.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <compilerArgs>
+                            <compilerArg>-Xlint:unchecked</compilerArg>
+                            <compilerArg>-Xlint:deprecation</compilerArg>
+                        </compilerArgs>
+                    </configuration>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20.1</version>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>2.9.0</version>
+                    <configuration>
+                        <lineEnding>LF</lineEnding>
+                        <configFile>../src/eclipse-java-google-style.xml</configFile>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <?m2e execute onIncremental?>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>verify-style</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <configLocation>${project.basedir}/checkstyle.xml</configLocation>
+                    </configuration>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-                <plugin>
-                	<groupId>org.eclipse.m2e</groupId>
-                	<artifactId>lifecycle-mapping</artifactId>
-                	<version>1.0.0</version>
-                	<configuration>
-                		<lifecycleMappingMetadata>
-                			<pluginExecutions>
-                				<pluginExecution>
-                					<pluginExecutionFilter>
-                						<groupId>
-                							net.revelc.code.formatter
-                						</groupId>
-                						<artifactId>
-                							formatter-maven-plugin
-                						</artifactId>
-                						<versionRange>
-                							[2.7.2,)
-                						</versionRange>
-                						<goals>
-                							<goal>validate</goal>
-                						</goals>
-                					</pluginExecutionFilter>
-                					<action>
-                					<execute>
-                					<runOnIncremental>true</runOnIncremental>
-                					</execute>
-                					</action>
-                				</pluginExecution>
-                			</pluginExecutions>
-                		</lifecycleMappingMetadata>
-                	</configuration>
-                </plugin>
+    			<plugin>
+    				<groupId>com.github.spotbugs</groupId>
+    				<artifactId>spotbugs-maven-plugin</artifactId>
+    				<version>3.1.11</version>
+    				<configuration>
+    					<effort>Max</effort>
+    					<!-- Reports all bugs (other values are medium and max) -->
+    					<threshold>Max</threshold>
+    					<!-- Produces XML report <xmlOutput>true</xmlOutput> -->
+    					<excludeFilterFile>src/spotbugs-exclude.xml</excludeFilterFile>
+    				</configuration>
+    				<executions>
+    					<execution>
+    						<phase>verify</phase>
+    						<goals>
+    							<goal>check</goal>
+    						</goals>
+    					</execution>
+    				</executions>
+    			</plugin>
+
+                      <plugin>
+                          <groupId>com.mycila</groupId>
+                          <artifactId>license-maven-plugin</artifactId>
+                          <version>3.0</version>
+                          <configuration>
+                              <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                              <properties>
+                                  <owner>spring-data-dynamodb</owner>
+                                  <email>${project.url}</email>
+                                  <project.inceptionYear>2013-2019</project.inceptionYear>
+                              </properties>
+                              <excludes>
+                                  <exclude>**/README.md</exclude>
+                                  <exclude>**/DONATION.md</exclude>
+                                  <exclude>**/CONTRIBUTING.md</exclude>
+                                  <exclude>**/LICENSE</exclude>
+                                  <exclude>src/test/resources/**</exclude>
+                                  <exclude>src/main/resources/**</exclude>
+                                  <exclude>**/*.psd</exclude>
+                                  <exclude>src/eclipse-java-google-style.xml</exclude>
+                              </excludes>
+                          </configuration>
+                          <executions>
+                              <execution>
+                                  <goals>
+                                      <goal>format</goal>
+                                  </goals>
+                                  <phase>validate</phase>
+                              </execution>
+                          </executions>
+                      </plugin>
+
+                      <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-dependency-plugin</artifactId>
+                          <version>3.1.1</version>
+                          <executions>
+                              <execution>
+                                  <!-- Prepare SQLite for in-memory DynamoDB instance (Unit testing) -->
+                                  <id>copy</id>
+                                  <phase>test-compile</phase>
+                                  <goals>
+                                      <goal>copy</goal>
+                                  </goals>
+                                  <configuration>
+                                      <artifactItems>
+                                          <artifactItem>
+                                              <groupId>com.almworks.sqlite4java</groupId>
+                                              <artifactId>${sqlite4java.artifactId}</artifactId>
+                                              <version>${sqlite4java.version}</version>
+                                              <type>${sqlite4java.type}</type>
+                                              <overWrite>true</overWrite>
+                                              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                          </artifactItem>
+                                      </artifactItems>
+                                  </configuration>
+                              </execution>
+                          </executions>
+                      </plugin>
+                      <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-surefire-plugin</artifactId>
+                          <version>3.0.0-M3</version>
+                          <configuration>
+                              <systemProperties>
+                                  <property>
+                                      <name>sqlite4java.library.path</name>
+                                      <value>${project.build.directory}/lib</value>
+                                  </property>
+                              </systemProperties>
+                          </configuration>
+                      </plugin>
+                      <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-failsafe-plugin</artifactId>
+                          <version>3.0.0-M3</version>
+                          <configuration>
+                              <systemPropertyVariables>
+                                  <sqlite4java.library.path>${project.build.directory}/lib</sqlite4java.library.path>
+                                  <dynamodb.port>${dynamodblocal.port}</dynamodb.port>
+                              </systemPropertyVariables>
+                          </configuration>
+                          <executions>
+                              <execution>
+                                  <id>integration-test</id>
+                                  <goals>
+                                      <goal>integration-test</goal>
+                                      <goal>verify</goal>
+                                  </goals>
+                              </execution>
+                          </executions>
+                      </plugin>
             </plugins>
+
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Specification-Title>Spring Data</Specification-Title>
-                            <Specification-Version>2.1</Specification-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgs>
-                        <compilerArg>-Xlint:unchecked</compilerArg>
-                        <compilerArg>-Xlint:deprecation</compilerArg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
-                    <properties>
-                        <owner>${project.artifactId}</owner>
-                        <email>${project.url}</email>
-                    </properties>
-                    <excludes>
-                        <exclude>**/README.md</exclude>
-                        <exclude>**/DONATION.md</exclude>
-                        <exclude>**/CONTRIBUTING.md</exclude>
-                        <exclude>**/LICENSE</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>**/*.psd</exclude>
-                        <exclude>src/eclipse-java-google-style.xml</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <phase>validate</phase>
-                    </execution>
-                </executions>
-            </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <executions>
+                    	<execution>
+							<id>enforce-maven</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<banDuplicatePomDependencyVersions/>
+									<requireMavenVersion>
+										<version>3.3.9</version>
+									</requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>1.8.0</version>
+                                    </requireJavaVersion>
+								</rules>
+							</configuration>
+						</execution>
+                    </executions>
+                </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
+                <version>1.6.8</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -362,7 +401,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
                 <executions>
                     <execution>
                         <goals>
@@ -377,7 +415,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>default-check</id>
+                        <id>check</id>
                             <phase>test</phase>
                             <goals>
                                 <goal>check</goal>
@@ -404,57 +442,7 @@
                         </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>net.revelc.code.formatter</groupId>
-                <artifactId>formatter-maven-plugin</artifactId>
-                <configuration>
-                    <configFile>${project.basedir}/eclipse-formatter-config.xml</configFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>validate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>verify-style</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <logViolationsToConsole>true</logViolationsToConsole>
-                    <configLocation>src/checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>3.1.5</version>
-				<configuration>
-					<effort>Max</effort>
-					<!-- Reports all bugs (other values are medium and max) -->
-					<threshold>Max</threshold>
-					<!-- Produces XML report <xmlOutput>true</xmlOutput> -->
-					<excludeFilterFile>src/spotbugs-exclude.xml</excludeFilterFile>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -474,63 +462,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <!-- Prepare SQLite for in-memory DynamoDB instance (Unit testing) -->
-                        <id>copy</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>com.almworks.sqlite4java</groupId>
-                                    <artifactId>${sqlite4java.artifactId}</artifactId>
-                                    <version>${sqlite4java.version}</version>
-                                    <type>${sqlite4java.type}</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <systemProperties>
-                        <property>
-                            <name>sqlite4java.library.path</name>
-                            <value>${project.build.directory}/lib</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <systemPropertyVariables>
-                        <sqlite4java.library.path>${project.build.directory}/lib</sqlite4java.library.path>
-                        <dynamodb.port>${dynamodblocal.port}</dynamodb.port>
-                    </systemPropertyVariables>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -543,20 +474,47 @@
 
     <repositories>
         <repository>
-            <id>spring-libs-snapshot</id>
-            <url>http://repo.springsource.org/libs-snapshot</url>
+            <id>spring-snapshot</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>dynamodb-local-oregon</id>
             <name>DynamoDB Local Release Repository</name>
             <url>https://s3-us-west-2.amazonaws.com/dynamodb-local/release</url>
         </repository>
+        <repository>
+            <id>org.jboss.repository.releases</id>
+            <name>JBoss Maven Release Repository</name>
+            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
-            <id>com.springsource.repository.bundles.release</id>
-            <url>http://repository.springsource.com/maven/bundles/release</url>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -629,6 +587,15 @@
             </properties>
         </profile>
         <profile>
+            <!-- Profile that is activated for the TravisCI build. Aka where there are no local resources -->
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.TRAVIS_CI</name>
+                </property>
+            </activation>
+        </profile>
+        <profile>
             <id>release</id>
             <build>
                 <plugins>
@@ -648,7 +615,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.0</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -661,7 +628,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -675,7 +642,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
-                        <version>3.7</version>
                         <configuration>
                         <!-- Deactivate as Github plugin controls the upload -->
                             <skipDeploy>true</skipDeploy>
@@ -819,7 +785,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -846,20 +812,28 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>${findbugs.version}</version>
                 <configuration>
+                    <!-- 2.5.2
+                        Enables analysis which takes more memory but finds more bugs.
+                        If you run out of memory, changes the value of the effort element
+                        to 'Low'.
+                    -->
                     <effort>Max</effort>
                     <!-- Reports all bugs (other values are medium and max) -->
-                    <threshold>Low</threshold>
+                    <threshold>Max</threshold>
+                    <!-- Produces XML report -->
+                    <xmlOutput>true</xmlOutput>
+                    <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.9.0</version>
+                <version>3.12.0</version>
                 <configuration>
                     <linkXRef>true</linkXRef>
                     <analysisCache>false</analysisCache>
@@ -873,12 +847,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.20.1</version>
+                <version>3.0.0-M3</version>
                 <configuration>
                 </configuration>
             </plugin>
         </plugins>
     </reporting>
 
+    <modules>
+        <module>spring-data-dynamodb</module>
+        <module>spring-data-dynamodb-boot</module>
+        <module>spring-data-dynamodb-cdi</module>
+        <module>spring-data-dynamodb-examples</module>
+    </modules>
 
 </project>
