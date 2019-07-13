@@ -15,6 +15,8 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository.query;
 
+import static java.util.stream.Collectors.joining;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperTableModel;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
@@ -22,6 +24,8 @@ import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 import org.socialsignin.spring.data.dynamodb.query.CountByHashAndRangeKeyQuery;
 import org.socialsignin.spring.data.dynamodb.query.MultipleEntityQueryExpressionQuery;
@@ -49,6 +53,8 @@ import java.util.Set;
  * @author Sebastian Just
  */
 public class DynamoDBEntityWithHashAndRangeKeyCriteria<T, ID> extends AbstractDynamoDBQueryCriteria<T, ID> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DynamoDBEntityWithHashAndRangeKeyCriteria.class);
 
 	private Object rangeKeyAttributeValue;
 	private Object rangeKeyPropertyValue;
@@ -359,6 +365,10 @@ public class DynamoDBEntityWithHashAndRangeKeyCriteria<T, ID> extends AbstractDy
 				scanExpression.addFilterCondition(conditionEntry.getKey(), condition);
 			}
 		}
+
+		LOGGER.warn("Executing Scan for table '{}' when querying by <{}>", entityInformation.getDynamoDBTableName(),
+				attributeConditions.keySet().stream().collect(joining(", ")));
+
 		return scanExpression;
 	}
 

@@ -15,12 +15,16 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository.query;
 
+import static java.util.stream.Collectors.joining;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperTableModel;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.amazonaws.services.dynamodbv2.model.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.socialsignin.spring.data.dynamodb.core.DynamoDBOperations;
 import org.socialsignin.spring.data.dynamodb.query.CountByHashKeyQuery;
 import org.socialsignin.spring.data.dynamodb.query.MultipleEntityQueryRequestQuery;
@@ -39,6 +43,8 @@ import java.util.Map;
  * @author Sebastian Just
  */
 public class DynamoDBEntityWithHashKeyOnlyCriteria<T, ID> extends AbstractDynamoDBQueryCriteria<T, ID> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DynamoDBEntityWithHashKeyOnlyCriteria.class);
 
 	private DynamoDBEntityInformation<T, ID> entityInformation;
 
@@ -117,6 +123,10 @@ public class DynamoDBEntityWithHashKeyOnlyCriteria<T, ID> extends AbstractDynamo
 			scanExpression.setProjectionExpression(projection.get());
 		}
 		limit.ifPresent(scanExpression::setLimit);
+
+		LOGGER.warn("Executing Scan for table '{}' when querying by <{}>", entityInformation.getDynamoDBTableName(),
+				attributeConditions.keySet().stream().collect(joining(", ")));
+
 		return scanExpression;
 	}
 
