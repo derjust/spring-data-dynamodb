@@ -172,7 +172,7 @@ API changes will follow SEMVER and loosly the Spring Framework releases.
 | 5.1.x                           | >= 2.1                         | >= 5.1                         | Lovelace-SR1              |
 `spring-data-dynamodb` depends directly on `spring-data` as also `spring-context`, `spring-data` and `spring-tx`.
 
-`compile` and `runtime` dependencies are kept to a minimum to allow easy integartion, for example into 
+`compile` and `runtime` dependencies are kept to a minimum to allow easy integration, for example into 
 Spring-Boot projects.
 
 ## History
