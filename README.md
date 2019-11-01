@@ -169,7 +169,10 @@ API changes will follow SEMVER and loosly the Spring Framework releases.
 | 4.4.x                           | >= 1.4.0 && < 2.0              | >= 4.3 && < 5.0                | Hopper-SR2                |
 | 4.5.x                           | >= 1.4.0 && < 2.0              | >= 4.3 && < 5.0                | Ingalls                   |
 | 5.0.x                           | >= 2.0 && < 2.1                | >= 5.0 && < 5.1                | Kay-SR1                   |
-| 5.1.x                           | >= 2.1                         | >= 5.1                         | Lovelace-SR1              |
+| 5.1.x                           | == 2.1                         | >= 5.1                         | Lovelace-SR1              |
+| 5.2.x                           | >= 2.2                         | >= 5.2                         | Moore-RELASE              |
+
+
 `spring-data-dynamodb` depends directly on `spring-data` as also `spring-context`, `spring-data` and `spring-tx`.
 
 `compile` and `runtime` dependencies are kept to a minimum to allow easy integartion, for example into 

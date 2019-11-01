@@ -77,6 +77,9 @@ public class FieldAndGetterReflectionEntityInformation<T, ID> extends AbstractEn
 		if (method != null) {
 			ReflectionUtils.makeAccessible(method);
 		}
+		if (field != null) {
+			ReflectionUtils.makeAccessible(field);
+		}
 	}
 
 	/*
@@ -88,6 +91,7 @@ public class FieldAndGetterReflectionEntityInformation<T, ID> extends AbstractEn
 	@Override
 	@SuppressWarnings("unchecked")
 	public ID getId(T entity) {
+
 		if (method != null) {
 			return entity == null ? null : (ID) ReflectionUtils.invokeMethod(method, entity);
 		} else {

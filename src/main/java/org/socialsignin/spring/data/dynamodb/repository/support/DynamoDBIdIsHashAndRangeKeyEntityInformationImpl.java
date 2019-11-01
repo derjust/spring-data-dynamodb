@@ -18,7 +18,6 @@ package org.socialsignin.spring.data.dynamodb.repository.support;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshaller;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.repository.core.support.ReflectionEntityInformation;
 
 import java.util.Map;
 import java.util.Optional;
@@ -34,7 +33,9 @@ import java.util.Set;
  * @author Michael Lavelle
  * @author Sebastian Just
  */
-public class DynamoDBIdIsHashAndRangeKeyEntityInformationImpl<T, ID> extends ReflectionEntityInformation<T, ID>
+public class DynamoDBIdIsHashAndRangeKeyEntityInformationImpl<T, ID>
+		extends
+			FieldAndGetterReflectionEntityInformation<T, ID>
 		implements
 			DynamoDBIdIsHashAndRangeKeyEntityInformation<T, ID> {
 
