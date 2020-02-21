@@ -45,7 +45,7 @@ public @interface EnableDynamoDBRepositories {
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise
 	 * annotation declarations e.g.:
 	 * {@code @EnableDynamoDBRepositories("org.my.pkg")} instead of
-	 * {@code @EnableDynamoDBaRepositories(basePackages="org.my.pkg")}.
+	 * {@code @EnableDynamoDBRepositories(basePackages="org.my.pkg")}.
 	 * 
 	 * @return The package name for scanning
 	 */
