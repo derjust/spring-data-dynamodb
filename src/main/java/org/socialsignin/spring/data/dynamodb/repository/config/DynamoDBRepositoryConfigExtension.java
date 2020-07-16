@@ -15,6 +15,7 @@
  */
 package org.socialsignin.spring.data.dynamodb.repository.config;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -251,6 +252,11 @@ public class DynamoDBRepositoryConfigExtension extends RepositoryConfigurationEx
 
 	protected String getBeanNameWithModulePrefix(String baseBeanName) {
 		return String.format("%s-%s", getModulePrefix(), baseBeanName);
+	}
+	
+	@Override
+	protected Collection<Class<? extends Annotation>> getIdentifyingAnnotations() {
+		return Arrays.asList(DynamoDBTable.class);
 	}
 
 	@Override
